@@ -70,7 +70,17 @@ export default function App() {
           isExpanded={panelActiveIndex === doc.id}
           onActivate={() => {
             setPanelActiveIndex(doc.id);
-            console.log("TODO: update read count (" + doc.id + ")");
+
+            setDocInfos(docInfos.map(info => {
+              if (info.id === doc.id) {
+                return {
+                  ...info,
+                  readCount: info.readCount + 1
+                };
+              } else {
+                return info;
+              }
+            }));
           }}
           darkMode={appearance.isDarkMode}
         >
@@ -78,7 +88,19 @@ export default function App() {
             isActive={
               docInfos.find(info => (info.id === doc.id)).isFavorite
             }
-            onToggleFavorite={() => console.log("TODO: toggle favorite (" + doc.id + ")")}
+            onToggleFavorite={
+              () => (setDocInfos(docInfos.map(info => {
+                if (info.id === doc.id) {
+                  return {
+                    ...info,
+                    isFavorite: !info.isFavorite
+                  };
+                } else {
+                  return info;
+                }
+              }
+              )))
+            }
           />
           {doc.body}
         </AccordionPanel>

@@ -36,11 +36,13 @@ export default function App() {
   ];
 
   const [docInfos, setDocInfos] = useState(
-    reactDocs.map(doc => ({
-      id: doc.id,
-      readCount: 0,
-      isFavorite: false
-    }))
+    reactDocs.reduce((result, item) => {
+      result[item.id] = {
+        readCount: 0,
+        isFavorite: false
+      };
+      return result;
+    }, {})
   );
   const [panelActiveIndex, setPanelActiveIndex] = useState(reactDocs[0].id);
   const [appearance, setAppearance] = useState({
@@ -66,41 +68,33 @@ export default function App() {
       {reactDocs.map(doc => (
         <AccordionPanel
           key={doc.id}
-          title={doc.title + ' (' + docInfos.find(info => (info.id === doc.id)).readCount + ')'}
+          title={doc.title + ' (' + docInfos[doc.id].readCount + ')'}
           isExpanded={panelActiveIndex === doc.id}
           onActivate={() => {
             setPanelActiveIndex(doc.id);
-
-            setDocInfos(docInfos.map(info => {
-              if (info.id === doc.id) {
-                return {
-                  ...info,
-                  readCount: info.readCount + 1
-                };
-              } else {
-                return info;
+            setDocInfos({
+              ...docInfos,
+              [doc.id]: {
+                ...docInfos[doc.id],
+                readCount: docInfos[doc.id].readCount + 1
               }
-            }));
+            });
           }}
           darkMode={appearance.isDarkMode}
         >
           <FavoriteButton
             isActive={
-              docInfos.find(info => (info.id === doc.id)).isFavorite
+              docInfos[doc.id].isFavorite
             }
-            onToggleFavorite={
-              () => (setDocInfos(docInfos.map(info => {
-                if (info.id === doc.id) {
-                  return {
-                    ...info,
-                    isFavorite: !info.isFavorite
-                  };
-                } else {
-                  return info;
+            onToggleFavorite={() => {
+              setDocInfos({
+                ...docInfos,
+                [doc.id]: {
+                  ...docInfos[doc.id],
+                  isFavorite: !docInfos[doc.id].isFavorite
                 }
-              }
-              )))
-            }
+              });
+            }}
           />
           {doc.body}
         </AccordionPanel>

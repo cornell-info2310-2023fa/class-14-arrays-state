@@ -35,14 +35,13 @@ export default function App() {
     }
   ];
 
-  const [docReadCounts, setDocReadCounts] = useState(reactDocs.map(doc => ({
-    id: doc.id,
-    count: 0
-  })));
-  const [docFavorites, setDocFavorites] = useState(reactDocs.map(doc => ({
-    id: doc.id,
-    isFavorite: false
-  })));
+  const [docInfos, setDocInfos] = useState(
+    reactDocs.map(doc => ({
+      id: doc.id,
+      readCount: 0,
+      isFavorite: false
+    }))
+  );
   const [panelActiveIndex, setPanelActiveIndex] = useState(reactDocs[0].id);
   const [appearance, setAppearance] = useState({
     isDarkMode: false,
@@ -67,7 +66,7 @@ export default function App() {
       {reactDocs.map(doc => (
         <AccordionPanel
           key={doc.id}
-          title={doc.title + ' (' + docReadCounts.find(readCount => (doc.id === readCount.id)).count + ')'}
+          title={doc.title + ' (' + docInfos.find(info => (info.id === doc.id)).readCount + ')'}
           isExpanded={panelActiveIndex === doc.id}
           onActivate={() => {
             setPanelActiveIndex(doc.id);
@@ -77,7 +76,7 @@ export default function App() {
         >
           <FavoriteButton
             isActive={
-              docFavorites.find(favorite => (favorite.id === doc.id)).isFavorite
+              docInfos.find(info => (info.id === doc.id)).isFavorite
             }
             onToggleFavorite={() => console.log("TODO: toggle favorite (" + doc.id + ")")}
           />

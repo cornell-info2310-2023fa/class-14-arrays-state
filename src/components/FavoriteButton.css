@@ -1,0 +1,11 @@
+.FavoriteButton {
+  display: inline-block;
+  font-size: 120%;
+  padding: 0.2em;
+  border-radius: 0.1em;
+}
+
+.FavoriteButton:hover {
+  background-color: gray;
+  cursor: pointer;
+}

@@ -1,0 +1,12 @@
+textarea {
+  width: 100%;
+}
+
+p {
+  margin: 0;
+  text-align: left;
+}
+
+button {
+  margin: 0 1em;
+}
